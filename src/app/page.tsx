@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Suspense } from "react";
 import { pageMetadata, personSchema } from "@/lib/metadata";
 import { site } from "@/lib/site";
 import { work } from "@/lib/content";
@@ -13,12 +12,8 @@ import { RobotNote } from "@/components/robot-note";
 
 export const metadata = pageMetadata("Home", site.description, "/");
 
-async function RecentWriting() {
+export default async function Home() {
   const articles = await getArticles();
-  return <WritingList articles={articles.slice(0, 3)} />;
-}
-
-export default function Home() {
   return (
     <div className="shell">
       <section className="hero">
@@ -79,15 +74,7 @@ export default function Home() {
           href="/writing"
           linkLabel="Read my writing"
         />
-        <Suspense
-          fallback={
-            <p className="writing-empty" role="status">
-              Loading writing…
-            </p>
-          }
-        >
-          <RecentWriting />
-        </Suspense>
+        <WritingList articles={articles.slice(0, 3)} />
       </section>
       <StructuredData data={personSchema} />
     </div>

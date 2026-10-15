@@ -340,6 +340,10 @@ test("homepage introduction and work render without waiting for client scripts",
     ).toBeVisible();
     await expect(page.getByRole("img", { name: "A robot arm" })).toBeVisible();
     await expect(page.locator(".loading-state")).toHaveCount(0);
+    await expect(
+      page.getByRole("link", { name: "Open: The site is up" }),
+    ).toBeVisible();
+    await expect(page.getByText("Loading writing…")).toHaveCount(0);
   } finally {
     await page.close();
   }

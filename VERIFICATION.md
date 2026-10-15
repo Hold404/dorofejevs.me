@@ -7,7 +7,7 @@ Checked 15 October 2026. This repository contains the portfolio copied from the 
 - `npm run lint`: passed, no warnings.
 - `npm run typecheck`: passed.
 - `npm run format:check`: passed.
-- `npm run test:config`: **8 passed, 0 failed**, including rejection of test/fixture Pages builds.
+- `npm run test:config`: **10 passed, 0 failed**, including rejection of test/fixture Pages builds.
 - `SITE_URL=https://dorofejevs-me.pages.dev npm run build:pages`: passed. Pages, MDX, RSS, sitemap and social image generated statically.
 - `SITE_URL=https://dorofejevs-me.pages.dev npm run test:pages`: **95 passed, 0 failed** against local Wrangler, including **33 visual comparisons** and **12 axe checks**.
 - `npm run test:articles`: **14 passed, 0 failed** against an isolated fixture build; no fixture content is in the exported site.
@@ -24,7 +24,11 @@ Wrangler's Pages deploy validation rejects `account_id` in the config file. The 
 
 ## CI and public verification
 
-The repository workflow runs verification before deploying on `main`. A separate `CLOUDFLARE_API_TOKEN` GitHub secret is required; a local interactive OAuth login does not satisfy this requirement. Public-site tests and the first workflow run are recorded below once completed.
+The repository workflow runs verification before deploying on `main`. A separate `CLOUDFLARE_API_TOKEN` GitHub secret is required; a local interactive OAuth login does not satisfy this requirement. The first public-site browser run passed **62 tests, 0 failed**, including 12 axe checks. The deployment-specific hostname returned `X-Robots-Tag: noindex`; the primary hostname stayed indexable. Public mobile/tablet/desktop screenshots were captured and inspected.
+
+[Initial GitHub Actions run](https://github.com/Hold404/dorofejevs.me/actions/runs/38812783329): installation, format, lint, types, build guards, production build and all **62 browser tests passed**. The deploy step stopped with the explicit missing `CLOUDFLARE_API_TOKEN` error. The live site was deployed successfully using local Wrangler; unattended CI publication is not verified until that secret is added and the workflow succeeds.
+
+The screenshot review found a transient Writing loading fallback in the original homepage. Article data is now awaited before static rendering, and the no-JavaScript test requires the visible article card. The full 95-test local Pages suite passed again after this fix. Build guards now also run when Next.js loads environment files, preventing local `.env` values from enabling fixture content in an export.
 
 ## Commands
 
@@ -52,4 +56,4 @@ Local verification used the supplied Node runtime, `OPENSSL_CONF=/dev/null`, wor
 
 Custom domain `dorofejevs.me` is not connected or verified. The deployed Pages hostname is used consistently as the canonical origin. Search Console/Bing ownership verification and actual Google/AI indexing are not established by browser tests. No Lighthouse result from the earlier local Next.js implementation is claimed as a measurement of this deployment.
 
-Internal MAS1 review only; no external agents or independent review. Graphify was unavailable and no graph existed; direct source inspection of build/config → static routes → Pages headers/redirects → CI and rendered tests provided the necessary cross-file evidence. The deployment uses build-time rendering and adds no client runtime dependencies.
+MAS1 Standard: one completed post-artifact internal review; no external agents or independent review. Graphify was unavailable and no graph existed; direct source inspection of build/config → static routes → Pages headers/redirects → CI and rendered tests provided the necessary cross-file evidence. The deployment uses build-time rendering and adds no client runtime dependencies.

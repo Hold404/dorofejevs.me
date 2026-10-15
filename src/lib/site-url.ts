@@ -1,4 +1,12 @@
 export function resolveSiteUrl(): string {
+  // Next.js calls this again after loading .env files. Validate here as well
+  // as in the CLI so a local env file cannot enable fixtures for deployment.
+  if (
+    process.env.CLOUDFLARE_PAGES_BUILD === "1" &&
+    (process.env.SITE_TEST_MODE === "1" || process.env.WRITING_FIXTURES === "1")
+  ) {
+    throw new Error("Pages builds refuse SITE_TEST_MODE and WRITING_FIXTURES.");
+  }
   const value = process.env.SITE_URL;
   if (!value) {
     if (process.env.NODE_ENV !== "production") return "http://localhost:3000";
