@@ -1,0 +1,44 @@
+---
+title: "MDX verification fixture"
+description: "Isolated test content for the article renderer, never used by the normal production build."
+date: "2026-01-15"
+updatedAt: "2026-01-16"
+tags: [engineering, "math & code"]
+draft: false
+---
+
+This content exists only in the isolated fixture build. An inline expression is $x^2 + y^2$.
+
+<p data-mdx-expression>{["Server", "rendered", "MDX"].join(" ")}</p>
+
+## Typed results
+
+A code block with an intentionally long line:
+
+```typescript title="example.ts"
+const intentionallyLongTechnicalIdentifierForResponsiveOverflowVerification =
+  "a-very-long-value-that-must-scroll-within-the-code-block-without-making-the-document-overflow-at-320-pixels";
+```
+
+### Failure behavior
+
+Use an explicit error result and a [descriptive internal link](/work).
+
+## Mathematics
+
+$$
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+$$
+
+## Typed results
+
+Repeated headings must receive distinct anchors.
+
+| Stage         | Input                 |
+| ------------- | --------------------- |
+| Detection     | Video stream          |
+| Triangulation | Multiple observations |
+
+## Conclusion
+
+A very long technical string: distributed_execution_identifier_abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz_abcdefghijklmnopqrstuvwxyz.

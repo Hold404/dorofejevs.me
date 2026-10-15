@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.next-fixtures/
+.cache/
+.env*
+!.env.example
+output/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store
+out/
+.wrangler/

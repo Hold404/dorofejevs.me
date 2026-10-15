@@ -1,0 +1,55 @@
+# Cloudflare Pages verification
+
+Checked 15 October 2026. This repository contains the portfolio copied from the existing local project, with a separate static-export build for Cloudflare Pages. The original checkout and development server remain untouched.
+
+## Executed results
+
+- `npm run lint`: passed, no warnings.
+- `npm run typecheck`: passed.
+- `npm run format:check`: passed.
+- `npm run test:config`: **8 passed, 0 failed**, including rejection of test/fixture Pages builds.
+- `SITE_URL=https://dorofejevs-me.pages.dev npm run build:pages`: passed. Pages, MDX, RSS, sitemap and social image generated statically.
+- `SITE_URL=https://dorofejevs-me.pages.dev npm run test:pages`: **95 passed, 0 failed** against local Wrangler, including **33 visual comparisons** and **12 axe checks**.
+- `npm run test:articles`: **14 passed, 0 failed** against an isolated fixture build; no fixture content is in the exported site.
+- `npm run test:authoring`: **1 passed, 0 failed**; new MDX files open, update and disappear without restarting development.
+- Responsive widths: **320, 375, 390, 768, 1024, 1440, 1920px**. Screenshot comparisons: **390, 768, 1440px**, covering all 11 public pages.
+- `npm audit --omit=dev`: **0 vulnerabilities**. Full audit reports five development-only entries for the existing `braces` advisory through the Next.js lint dependency chain; the suggested incompatible major downgrade was not applied.
+- Local Wrangler published 153 static files to project **dorofejevs-me**. Production: <https://dorofejevs-me.pages.dev>. Initial deployment: <https://94628e07.dorofejevs-me.pages.dev>.
+
+## Corrections made during verification
+
+The first browser run had one failing sitemap assertion because the test still assumed the reserved local origin; it now checks the configured build origin. Wrangler also exposed unnecessary React prefetches for RSS links; these links now use native anchors. The full suite passed after both fixes, without changing visual baselines. An unused import was removed to satisfy zero-warning lint.
+
+Wrangler's Pages deploy validation rejects `account_id` in the config file. The account is now supplied through `CLOUDFLARE_ACCOUNT_ID` locally and the matching GitHub repository variable. Local preview and deployment share the same project name and static output directory.
+
+## CI and public verification
+
+The repository workflow runs verification before deploying on `main`. A separate `CLOUDFLARE_API_TOKEN` GitHub secret is required; a local interactive OAuth login does not satisfy this requirement. Public-site tests and the first workflow run are recorded below once completed.
+
+## Commands
+
+```sh
+git clone https://github.com/Hold404/dorofejevs.me.git
+npm install --save-dev --save-exact wrangler@4.151.0
+npm run format:check
+npm run lint
+npm run typecheck
+npm run test:config
+npm audit --json
+npm audit --omit=dev
+SITE_URL=https://dorofejevs-me.pages.dev npm run build:pages
+SITE_URL=https://dorofejevs-me.pages.dev npm run test:pages
+npm run test:authoring
+npm run test:articles
+CLOUDFLARE_ACCOUNT_ID=4885cc5878d5767dbef79f56c1a2cfed wrangler pages project create dorofejevs-me --production-branch main
+CLOUDFLARE_ACCOUNT_ID=4885cc5878d5767dbef79f56c1a2cfed node node_modules/wrangler/bin/wrangler.js pages deploy out --branch main --commit-dirty=true
+SITE_URL=https://dorofejevs-me.pages.dev PAGES_TEST_URL=https://dorofejevs-me.pages.dev npm run test:pages
+```
+
+Local verification used the supplied Node runtime, `OPENSSL_CONF=/dev/null`, workspace-local npm/browser caches, and the supplied shell because of host OpenSSL/toolchain restrictions. GitHub uses Node.js 24 on Ubuntu. Local CLI authentication used the installed Wrangler; CI uses lockfile-pinned Wrangler.
+
+## Limits
+
+Custom domain `dorofejevs.me` is not connected or verified. The deployed Pages hostname is used consistently as the canonical origin. Search Console/Bing ownership verification and actual Google/AI indexing are not established by browser tests. No Lighthouse result from the earlier local Next.js implementation is claimed as a measurement of this deployment.
+
+Internal MAS1 review only; no external agents or independent review. Graphify was unavailable and no graph existed; direct source inspection of build/config → static routes → Pages headers/redirects → CI and rendered tests provided the necessary cross-file evidence. The deployment uses build-time rendering and adds no client runtime dependencies.

@@ -1,0 +1,20 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/opengraph-image
+  Content-Type: image/png
+
+/rss.xml
+  Content-Type: application/rss+xml; charset=utf-8
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+
+https://:deployment.dorofejevs-me.pages.dev/*
+  X-Robots-Tag: noindex

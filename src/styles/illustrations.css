@@ -1,0 +1,65 @@
+.robot-note {
+  margin: 0;
+  min-width: 0;
+  color: var(--color-secondary);
+}
+.robot-note svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.robot-motion {
+  transform-origin: 0 0;
+  animation-duration: 8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+.robot-shoulder {
+  animation-name: robot-shoulder;
+}
+.robot-elbow {
+  animation-name: robot-elbow;
+}
+.robot-wrist {
+  animation-name: robot-wrist;
+}
+.robot-tool {
+  animation-name: robot-tool;
+}
+.robot-jaw-right {
+  animation-name: robot-jaw-right;
+}
+.robot-jaw-left {
+  animation-name: robot-jaw-left;
+}
+.robot-box {
+  animation-name: robot-box;
+}
+[data-motion-visible="false"] :is(.robot-motion, .tracking-motion) {
+  animation-name: none !important;
+}
+@media (max-width: 767px) {
+  .robot-note {
+    max-width: 440px;
+    margin: 32px auto 0;
+  }
+}
+
+.tracking-motion {
+  animation-duration: 4.8s;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  transform-origin: 0 0;
+}
+.tracking-ball {
+  animation-name: tracking-ball;
+}
+.tracking-shadow {
+  animation-name: tracking-shadow;
+}
+.tracking-fade {
+  opacity: 1;
+}
