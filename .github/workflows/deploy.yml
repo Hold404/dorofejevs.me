@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SITE_URL: ${{ vars.SITE_URL || 'https://dorofejevs-me.pages.dev' }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://dorofejevs.me' }}
       SITE_TEST_MODE: "0"
       WRITING_FIXTURES: "0"
       NEXT_TELEMETRY_DISABLED: "1"

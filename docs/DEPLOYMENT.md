@@ -2,7 +2,7 @@
 
 ## Assumptions and scope
 
-The existing portfolio remains the source of the design and content. The cloned repository is the deployable copy. This task authorizes publication and GitHub pushes; no services are purchased. Use the owner's Cloudflare account and a dedicated `dorofejevs-me` Pages project. Until a custom domain is connected, use the working Pages origin as the canonical URL.
+The existing portfolio remains the source of the design and content. The cloned repository is the deployable copy. This task authorizes publication and GitHub pushes; no services are purchased. Use the owner's Cloudflare account and a dedicated `dorofejevs-me` Pages project. The connected HTTPS custom domain `https://dorofejevs.me` is the canonical origin.
 
 ## Implementation
 
@@ -25,14 +25,14 @@ npm run format:check
 npm run lint
 npm run typecheck
 npm run test:config
-SITE_URL=https://dorofejevs-me.pages.dev npm run build:pages
-SITE_URL=https://dorofejevs-me.pages.dev npm run test:pages
+SITE_URL=https://dorofejevs.me npm run build:pages
+SITE_URL=https://dorofejevs.me npm run test:pages
 npm run preview:pages
 
 # First-time interactive account authorization, if needed:
 npx wrangler login
 # The project already exists; do not create another one for CI.
-CLOUDFLARE_ACCOUNT_ID=4885cc5878d5767dbef79f56c1a2cfed SITE_URL=https://dorofejevs-me.pages.dev npm run deploy:pages
+CLOUDFLARE_ACCOUNT_ID=4885cc5878d5767dbef79f56c1a2cfed SITE_URL=https://dorofejevs.me npm run deploy:pages
 ```
 
 `deploy:pages` rebuilds with a validated real URL, then runs `wrangler pages deploy out --branch main`. Test-mode/fixture builds are rejected. No Node.js process runs in production: only exported static files are uploaded. `npm start` is for a normal `npm run build`, not an exported Pages build. Do not run competing builds in the same checkout simultaneously.
@@ -46,7 +46,7 @@ Add the repository Actions secret **CLOUDFLARE_API_TOKEN** at <https://github.co
 Repository Actions variables:
 
 - `CLOUDFLARE_ACCOUNT_ID`: `4885cc5878d5767dbef79f56c1a2cfed` (public account identifier).
-- `SITE_URL`: initially `https://dorofejevs-me.pages.dev`.
+- `SITE_URL`: `https://dorofejevs.me`.
 - `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`: optional public webmaster verification values.
 
 Both local CLI and CI use the project name in `wrangler.jsonc`. The account ID comes from `CLOUDFLARE_ACCOUNT_ID`, a public environment/Actions variable; Pages does not accept it in the Wrangler configuration file. Never commit a token or `.env.local`.
@@ -55,9 +55,11 @@ CI runs the browser, axe, crawler and hosting tests. Visual comparisons are excl
 
 ## Domains and indexing
 
-Connect `dorofejevs.me` through this Pages project's **Custom domains**, following its DNS instructions. After HTTPS resolves correctly, change the repository `SITE_URL` variable and rebuild. Add a host-specific permanent redirect from `dorofejevs-me.pages.dev` to the custom domain. Do not redirect the primary hostname before the target works.
+`dorofejevs.me` is connected to this Pages project and serves valid HTTPS. `SITE_URL` generates canonical URLs, Open Graph URLs, structured-data identifiers, RSS and sitemap entries for that domain. HTTP already redirects to HTTPS.
 
-`public/_headers` keeps the primary hostname indexable and applies `noindex` to deployment-specific subdomains. `public/_redirects` preserves the old case-study URL with HTTP 308. The generated `404.html` prevents Pages' SPA fallback from returning HTTP 200 for nonexistent articles. RSS uses native anchors to avoid React prefetches for an XML document.
+A host-level 301 from `dorofejevs-me.pages.dev` must be configured separately through Cloudflare **Bulk Redirects**; Pages `_redirects` does not support domain-level redirects. This optional consolidation rule has not been created. Set source `dorofejevs-me.pages.dev`, target `https://dorofejevs.me`, status 301, preserve query string, subpath matching and preserve path suffix. Keep deployment-specific subdomains available for preview if desired. [Cloudflare instructions](https://developers.cloudflare.com/pages/how-to/redirect-to-custom-domain/).
+
+`public/_headers` keeps `dorofejevs.me` indexable and applies `noindex` to the main `pages.dev` alias and deployment-specific subdomains. `public/_redirects` preserves the old case-study URL with HTTP 308. The generated `404.html` prevents Pages' SPA fallback from returning HTTP 200 for nonexistent articles. RSS uses native anchors to avoid React prefetches for an XML document.
 
 After a deployment, check all public pages, canonical URLs, the PNG social image, RSS/XML content types, the sitemap, robots.txt, the legacy redirect, and real 404 responses. Confirm Google/Bing verification and submit the sitemap separately; deployment alone does not establish indexing or AI citations.
 

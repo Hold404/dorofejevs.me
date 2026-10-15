@@ -1,6 +1,6 @@
 # Search and AI discovery
 
-Reviewed on 15 October 2026. This document describes technical readiness and the steps needed after publishing. Local tests cannot establish Google indexing, rankings, a Knowledge Panel, AI citations, or what a model knows without web search.
+Reviewed on 16 October 2026. This document describes technical readiness and the steps needed after publishing. Local tests cannot establish Google indexing, rankings, a Knowledge Panel, AI citations, or what a model knows without web search.
 
 ## Identity and content
 
@@ -42,7 +42,7 @@ No `llms.txt`, hidden keywords, or AI-directed instructions are added. Google sa
 7. Review the property's available Search generative AI controls and performance reports in Search Console. Keep the site eligible for inclusion if AI visibility is desired. [Google guidance](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
 8. Add the canonical website link to the owner's GitHub and LinkedIn profiles and keep the name/role consistent. These are owner actions; this implementation does not modify external profiles or submit anything to search engines.
 
-The initial Pages origin is `https://dorofejevs-me.pages.dev`. Canonicals, sitemap, RSS, and structured data use the build-time `SITE_URL`. Custom-domain ownership/connection, Search Console verification, public URL inspection, Rich Results Test and actual indexing remain separate checks. See `docs/DEPLOYMENT.md` before changing the canonical domain.
+The connected production origin is `https://dorofejevs.me`. Canonicals, sitemap, RSS, and structured data use this build-time `SITE_URL`. The `pages.dev` alias and deployment-specific hostnames are marked noindex; the custom domain is indexable. A host-level redirect requires a separate Cloudflare Bulk Redirect rule. Search Console/Bing ownership verification, public URL inspection, Rich Results Test and actual indexing remain unverified. HTML verification tags are not configured; this does not establish whether the owner has verified by DNS. See `docs/DEPLOYMENT.md` before changing domains.
 
 ## Ongoing publishing and measurement
 

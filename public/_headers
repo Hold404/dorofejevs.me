@@ -18,3 +18,6 @@
 
 https://:deployment.dorofejevs-me.pages.dev/*
   X-Robots-Tag: noindex
+
+https://dorofejevs-me.pages.dev/*
+  X-Robots-Tag: noindex

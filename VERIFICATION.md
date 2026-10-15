@@ -1,3 +1,26 @@
+# Canonical-domain correction — 16 October 2026
+
+The owner connected `dorofejevs.me` to the existing Pages project. HTTPS returned HTTP 200, and HTTP already redirected to HTTPS, but generated canonical URLs still referenced the original Pages hostname. The production `SITE_URL`, workflow fallback, build examples, sitemap/RSS/structured-data origin and alias indexing policy were updated for `https://dorofejevs.me`.
+
+For this change, formatting, lint, TypeScript, the Pages production build and **95 local Playwright tests passed** (including 33 visual comparisons and 12 axe checks). No design or article content changed. Before the correction, 19 live SEO/crawler tests passed against the previous canonical origin; those results did not validate the newly connected domain.
+
+The custom domain is indexable. Both the primary `pages.dev` alias and deployment-specific hostnames are marked `noindex`. Cloudflare Pages does not support host-level redirects in `_redirects`; a separate optional Bulk Redirect is documented but has not been configured. Search Console/Bing ownership verification, sitemap submission and actual indexing remain unverified. Missing HTML verification tags do not establish whether DNS verification has already been completed by the owner.
+
+The CI token blocker in the historical record below was resolved: workflow run 38813132913, attempt 2, passed all checks and published production deployment `99f91e18-c3c2-4474-a046-c24f292cdddf`. The deployed site then passed 62 additional browser tests.
+
+Commands for the domain correction:
+
+```sh
+npm run format:check
+npm run lint
+npm run typecheck
+SITE_URL=https://dorofejevs.me npm run build:pages
+SITE_URL=https://dorofejevs.me npm run test:pages
+gh variable set SITE_URL --body https://dorofejevs.me --repo Hold404/dorofejevs.me
+```
+
+The following sections preserve the initial Pages deployment history.
+
 # Cloudflare Pages verification
 
 Checked 15 October 2026. This repository contains the portfolio copied from the existing local project, with a separate static-export build for Cloudflare Pages. The original checkout and development server remain untouched.

@@ -27,15 +27,15 @@ npm start
 
 ## Deploy to Cloudflare Pages
 
-Production project: **dorofejevs-me**, public origin: <https://dorofejevs-me.pages.dev>.
+Production project: **dorofejevs-me**, public origin: <https://dorofejevs.me>.
 Repository: <https://github.com/Hold404/dorofejevs.me>.
 
 ```sh
-SITE_URL=https://dorofejevs-me.pages.dev npm run build:pages
-SITE_URL=https://dorofejevs-me.pages.dev npm run test:pages
+SITE_URL=https://dorofejevs.me npm run build:pages
+SITE_URL=https://dorofejevs.me npm run test:pages
 npm run preview:pages
 # Publish using your local Wrangler login:
-CLOUDFLARE_ACCOUNT_ID=4885cc5878d5767dbef79f56c1a2cfed SITE_URL=https://dorofejevs-me.pages.dev npm run deploy:pages
+CLOUDFLARE_ACCOUNT_ID=4885cc5878d5767dbef79f56c1a2cfed SITE_URL=https://dorofejevs.me npm run deploy:pages
 ```
 
 Pushes to `main` run `.github/workflows/deploy.yml`: install, format, lint, typecheck, configuration tests, static export, Playwright through Wrangler, then deploy the tested artifact to the same project. The workflow requires the repository secret `CLOUDFLARE_API_TOKEN` (Account → Cloudflare Pages → Edit for your account). `SITE_URL` is an Actions variable. See [deployment documentation](docs/DEPLOYMENT.md) for token setup, domains, testing, and rollback.
